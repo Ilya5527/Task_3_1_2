@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>id</th>
+            <br>
+            <th>Username</th>
+            <br>
+            <th>Password</th>
+            <br>
+            <th>Roles</th>
+            <br>
+            <th>Delete user</th>
+            <br>
+            <th>Change user</th>
+            <br>
+            <th>Make an administrator</th>
+        </tr>
+        </thead>
+        <tbod>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.getId()}"></td>
+                <td th:text="${user.getUsername()}"></td>
+                <td th:text="${user.getPassword()}"></td>
+                <td th:text="${user.getRoles()}"></td>
+                <td>
+                    <form th:method="delete" th:action="@{/admin/{id}(id = ${user.getId()})}">
+                        <input type="submit" value="Delete"/>
+                    </form>
+                </td>
+                <td>
+                    <form th:method="get" th:action="@{/admin/{id}/updateUser(id = ${user.getId()})}">
+                        <input type="submit" value="Update"/>
+                    </form>
+                </td>
+                <td>
+                    <form th:method="put" th:action="@{/admin/{id}(id = ${user.getId()})}">
+                        <input type="submit" value="Make admin"/>
+                    </form>
+                </td>
+
+            </tr>
+        </tbod>
+    </table>
+    <br>
+    <br>
+<!--    <a href="/userList/addUser">ADD A NEW USER</a>-->
+</div>
+</body>
+</html>
