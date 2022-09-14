@@ -5,17 +5,24 @@
     <title></title>
 </head>
 <body>
-<form method="post" th:action="@{/userList}" th:object="${user}">
+<form th:method="post" th:action="@{/admin}" th:object="${user}">
 
-    <label for="firstName">Enter Firstname</label>
-    <input type="text" th:field="*{firstName}" id="firstName"/>
-    <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Firstname error</div>
+    <label for="username">Enter username</label>
+    <input type="text" th:field="*{username}" id="username"/>
+    <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</div>
 
     <br>
 
-    <label for="lastName">Enter Lastname</label>
-    <input type="text" th:field="*{lastName}" id="lastName"/>
-    <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Lastname error</div>
+    <label for="password">Enter password</label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Lastname error</div>
+
+    <br>
+
+    <select id="dropDownList" multiple size="2" th:field="*{roles}">
+        <option value="0" disabled>select role</option>
+        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role}"></option>
+    </select>
 
     <br>
 

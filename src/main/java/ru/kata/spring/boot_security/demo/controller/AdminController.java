@@ -17,6 +17,10 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
+    // TODO
+    // - для апдейта или создания нового юсерв отправь на фронт все роли из базы,
+    // там выбери нужные и верни, например айдишники ролей, в контроллере найди роли и засеть юсеру
+
     private final UserService userService;
     private final RoleService roleService;
 
@@ -37,6 +41,8 @@ public class AdminController {
 
     @GetMapping("/addUser")
     public String addUser(ModelMap model) {
+        List<Role> role = roleService.allRoles();
+        model.addAttribute("roles", role);
         model.addAttribute("user", new User());
         return "addUser";
     }
@@ -45,12 +51,11 @@ public class AdminController {
     @PostMapping()
     public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            if (bindingResult.hasErrors()) {
                 return "addUser";
-            }
         }
-        this.userService.addUser(user);
-        return "redirect:userList";
+
+        userService.addUser(user);
+        return "redirect:/admin/showUsers";
     }
 
     @DeleteMapping("/{id}")
@@ -64,30 +69,43 @@ public class AdminController {
     @GetMapping("/{id}/updateUser")
     public String update(@PathVariable("id") long id, ModelMap model) {
         User user = userService.getUserById(id);
+        List<Role> roles = roleService.allRoles();
         model.addAttribute("user", user);
+        model.addAttribute("roleList", roles);
         return "updateUser";
     }
 
-    @PatchMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") long id, BindingResult bindingResult) {
 
-        User userFromDB = userService.getUserById(id);
+    @PatchMapping("/{id}")
+    public String updateUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "updateUser";
         }
-        userFromDB.setUsername(user.getUsername());
-        userService.updateUser(userFromDB);
+
+        userService.updateUser(user);
         return "redirect:/admin/showUsers";
     }
 
     @PutMapping("/{id}")
-    public String addNewRole (@PathVariable("id") long id) {
+    public String giveRoleAdmin(@PathVariable("id") long id) {
         Role role = roleService.getAdminRole();
         User user = userService.getUserById(id);
-        user.addRoleToUser(role);
+        user.setRoles(role);
 
-        userService.addUser(user);
+        userService.updateUser(user);
+
+        return "redirect:/admin/showUsers";
+    }
+
+    @PostMapping("/{id}")
+    public String giveRoleUser(@PathVariable("id") long id) {
+        Role role = roleService.getDefaultRole();
+        User user = userService.getUserById(id);
+
+        user.setRoles(role);
+
+        userService.updateUser(user);
 
         return "redirect:/admin/showUsers";
     }

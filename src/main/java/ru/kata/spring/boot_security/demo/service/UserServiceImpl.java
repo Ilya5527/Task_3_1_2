@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entity.Role;
@@ -18,17 +19,20 @@ public class UserServiceImpl implements ru.kata.spring.boot_security.demo.servic
 
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     @Override
     public void addUser(User user) {
-        Role ROLE_USER = roleService.getDefaultRole();
-        user.addRoleToUser(ROLE_USER);
-        userRepository.saveUser(user);
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
     }
 
     @Override
@@ -45,21 +49,27 @@ public class UserServiceImpl implements ru.kata.spring.boot_security.demo.servic
     @Override
     @Transactional(readOnly = true)
     public User getUserById(long id) {
-        return userRepository.findById(id);
+        Optional<User> optional = userRepository.findById(id);
+
+        if (optional.isEmpty()) {
+            throw new NullPointerException("Пользователя с таким id не существует!");
+        }
+
+        return optional.get();
     }
 
     @Override
     public void updateUser(User changedUser) {
-        userRepository.updateUser(changedUser);
+        userRepository.save(changedUser);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        Optional<User> optional = userRepository.findByUsername(username);
 
-        if (user == null) {
+        if (optional.isEmpty()) {
             throw new UsernameNotFoundException("User Not Found");
         }
-        return user;
+        return optional.get();
     }
 }

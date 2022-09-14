@@ -19,12 +19,10 @@ import javax.validation.Valid;
 public class RegistryController {
     private final UserService userService;
     private final UserValidator userValidator;
-    private final PasswordEncoder passwordEncoder;
 
-    public RegistryController(UserService userService, UserValidator userValidator, PasswordEncoder passwordEncoder) {
+    public RegistryController(UserService userService, UserValidator userValidator) {
         this.userService = userService;
         this.userValidator = userValidator;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/registration")
@@ -41,9 +39,6 @@ public class RegistryController {
         if (bindingResult.hasErrors()) {
             return "auth/registration";
         }
-
-        String passwordCode = passwordEncoder.encode(user.getPassword());
-        user.setPassword(passwordCode);
 
         userService.addUser(user);
 
