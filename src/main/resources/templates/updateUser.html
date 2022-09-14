@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -14,10 +15,16 @@
 
     <br>
 
-    <select th:field="*{roles}" multiple>
-        <option value="1" disabled>select role</option>
-        <option th:each="myRole : ${roleList}" th:value="${myRole.id}" th:text="${myRole}"></option>
-    </select>
+<!--        <select th:field="*{roles}" multiple size="2">-->
+<!--            <option value="0" disabled>select role</option>-->
+<!--            <option th:each="myRole : ${roleList}" th:value="${myRole.id}" th:text="${myRole.name}"></option>-->
+<!--        </select>-->
+    <input type="checkbox" name="roles"
+           th:each="role : ${roleList}"
+           th:text="${role.name}"
+           th:value="${role.id}"
+           th:field="${user.roles}" />
+
 
     <br>
 

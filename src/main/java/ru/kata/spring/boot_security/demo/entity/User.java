@@ -36,6 +36,13 @@ public class User implements UserDetails {
     )
     private List<Role> roles;
 
+    public void setRoles(List<Role> roles) {
+        if (roles == null) {
+            roles = new ArrayList<>();
+        }
+        this.roles = roles;
+    }
+
     public void setRoles(Role role) {
         if (roles == null) {
             roles = new ArrayList<>();

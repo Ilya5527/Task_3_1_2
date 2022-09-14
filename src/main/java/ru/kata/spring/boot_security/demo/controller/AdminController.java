@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -70,6 +71,7 @@ public class AdminController {
     public String update(@PathVariable("id") long id, ModelMap model) {
         User user = userService.getUserById(id);
         List<Role> roles = roleService.allRoles();
+//        user.setRoles(Collections.emptyList());
         model.addAttribute("user", user);
         model.addAttribute("roleList", roles);
         return "updateUser";
