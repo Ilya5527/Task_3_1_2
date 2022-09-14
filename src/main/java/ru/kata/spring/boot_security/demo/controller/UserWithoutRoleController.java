@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/userWithoutRole")
 public class UserWithoutRoleController {
-
-
     @GetMapping
     public String getPage () {
-
         return "userWithoutRole";
     }
 }

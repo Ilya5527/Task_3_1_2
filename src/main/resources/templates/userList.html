@@ -21,7 +21,6 @@
             <br>
             <th>Change user</th>
             <br>
-            <th>Give Role</th>
         </tr>
         </thead>
         <tbod>
@@ -40,16 +39,6 @@
                         <input type="submit" value="Update"/>
                     </form>
                 </td>
-                <td>
-                    <form th:method="put" th:action="@{/admin/{id}(id = ${user.getId()})}">
-                        <input type="submit" value="Make admin"/>
-                    </form>
-                    <br>
-                    <form method="post" th:action="@{/admin/{id}(id = ${user.getId()})}">
-                        <input type="submit" value="Make user"/>
-                    </form>
-                </td>
-
             </tr>
         </tbod>
     </table>

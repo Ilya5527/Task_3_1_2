@@ -15,15 +15,11 @@
 
     <br>
 
-<!--        <select th:field="*{roles}" multiple size="2">-->
-<!--            <option value="0" disabled>select role</option>-->
-<!--            <option th:each="myRole : ${roleList}" th:value="${myRole.id}" th:text="${myRole.name}"></option>-->
-<!--        </select>-->
     <input type="checkbox" name="roles"
            th:each="role : ${roleList}"
            th:text="${role.name}"
            th:value="${role.id}"
-           th:field="${user.roles}" />
+           th:field="${user.roles}"/>
 
 
     <br>

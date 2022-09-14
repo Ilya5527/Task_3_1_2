@@ -17,16 +17,11 @@ import java.security.Principal;
 public class UserController {
 
 
-
-
     @GetMapping()
-    public String showUserInfo (ModelMap model) {
-
+    public String showUserInfo(ModelMap model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = "Hello " + auth.getName() + ", welcome to my website"; //get logged in username
-
         model.addAttribute("username", name);
-
         return "user";
     }
 

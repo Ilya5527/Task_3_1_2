@@ -27,21 +27,16 @@ public class RegistryController {
 
     @GetMapping("/registration")
     public String registration (@ModelAttribute("user") User user) {
-
         return "auth/registration";
     }
 
     @PostMapping("/registration")
     public String doRegistration (@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-
         userValidator.validate(user, bindingResult);
-
         if (bindingResult.hasErrors()) {
             return "auth/registration";
         }
-
         userService.addUser(user);
-
         return "redirect:/login";
     }
 
