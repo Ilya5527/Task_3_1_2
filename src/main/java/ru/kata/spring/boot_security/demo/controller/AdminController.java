@@ -18,10 +18,6 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    // TODO
-    // - для апдейта или создания нового юсерв отправь на фронт все роли из базы,
-    // там выбери нужные и верни, например айдишники ролей, в контроллере найди роли и засеть юсеру
-
     private final UserService userService;
     private final RoleService roleService;
 
@@ -71,7 +67,7 @@ public class AdminController {
     public String update(@PathVariable("id") long id, ModelMap model) {
         User user = userService.getUserById(id);
         List<Role> roles = roleService.allRoles();
-//        user.setRoles(Collections.emptyList());
+
         model.addAttribute("user", user);
         model.addAttribute("roleList", roles);
         return "updateUser";
